@@ -1,0 +1,146 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@hostAddress = http://localhost:6248
+@mcpPath = /
+
+@githubToken = {{$processEnv GITHUB_TOKEN}}
+
+@owner = octocat
+@repoName = Hello-World
+
+### List MCP tools
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/list",
+  "params": {}
+}
+
+### ExploreRepo
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "explore_repo",
+    "arguments": {
+      "owner": "{{owner}}",
+      "name": "{{repoName}}"
+    }
+  }
+}
+
+### ListFiles
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "list_files",
+    "arguments": {
+      "owner": "{{owner}}",
+      "name": "{{repoName}}",
+      "path": "/"
+    }
+  }
+}
+
+### ReadFile
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "read_file",
+    "arguments": {
+      "owner": "{{owner}}",
+      "name": "{{repoName}}",
+      "path": "/README"
+    }
+  }
+}
+
+### SearchCode
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "tools/call",
+  "params": {
+    "name": "search_code",
+    "arguments": {
+      "query": "Hello",
+      "limit": "1"
+    }
+  }
+}
+
+### RecentCommits
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "tools/call",
+  "params": {
+    "name": "recent_commits",
+    "arguments": {
+      "owner": "{{owner}}",
+      "name": "{{repoName}}",
+      "limit": "1"
+    }
+  }
+}
+
+### GetIssues
+POST {{hostAddress}}{{mcpPath}}
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+Authorization: Bearer {{githubToken}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "tools/call",
+  "params": {
+    "name": "get_issues",
+    "arguments": {
+      "owner": "{{owner}}",
+      "name": "{{repoName}}",
+      "limit": "1"
+    }
+  }
+}
